@@ -12,7 +12,7 @@ class AddressBook(UserDict):
                 print(f'{user_phone} added to {name}')
             else:
                 break
-        self.data[new_user.name.value] = new_user.phones
+        self.data[new_user.name.value] = new_user
 
     def find_user(self, name):
         return self.data.get(name)
@@ -20,24 +20,21 @@ class AddressBook(UserDict):
     def show_all_records(self):
         result = ""
         for name, phones in self.data.items():
-            result += f"{name}: {phones}\n"
+            result += f"{name}: {phones.phones}\n"
         print(result)
 
     def remove_phones(self, name):
-        if self.find_user(name):
-            user = Record(name)
-            user.phones = self.data[name]
-            user.remove_phone()
+        checking = self.find_user(name)
+        if checking:
+            checking.remove_phone()
         else:
             print(f'{name} doesn\'t exist')
 
     def change_phones(self, name):
-        if self.find_user(name):
-            user = Record(name)
-            user.phones = self.data[name]
-            user.change_phone()
+        checking = self.find_user(name)
+        if checking:
+            checking.change_phone()
             print(f'New phone added to {name}!')
-
         else:
             print(f'{name} doesn\'t exist')
 
@@ -126,7 +123,7 @@ def change_phone(name):
 def show_number(name):
     result = USERS.find_user(name)
     if result:
-        return f"{name}: {result}"
+        return f"{name}: {result.phones}"
     else:
         print(f'User {name} doesn\'t exist.')
         return f'Do you wanna do something else?'
